@@ -1,4 +1,4 @@
-package crud.users.springUsers.Repository;
+package crud.users.springUsers.repository;
 
 import crud.users.springUsers.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;

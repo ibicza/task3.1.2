@@ -7,7 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.Optional;
 
 
 @Controller
@@ -16,7 +16,7 @@ import java.util.List;
 public class UserController {
 
 
-    public static final String redirectHome = "redirect:/";
+    public static final String REDIRECT_HOME = "redirect:/";
     private UserService userDao;
 
     @GetMapping
@@ -31,32 +31,22 @@ public class UserController {
         return "addUser";
     }
 
-    @PostMapping("/add")
-    public String addUser(@ModelAttribute("user") User user, Model model) {
-        userDao.saveUser(user);
-        List<User> users = userDao.getAllUsers();
-        model.addAttribute("users", users);
-        return redirectHome;
-    }
-
-
-
     @GetMapping("/edit")
     public String editUserForm(@RequestParam("id") Long id, Model model) {
-        User user = userDao.getUserById(id);
+        Optional<User> user = userDao.getUserById(id);
         model.addAttribute("user", user);
         return "editUser";
     }
 
-    @PostMapping("/edit")
+    @PostMapping({"/edit", "/add"})
     public String editUser(@ModelAttribute("user") User user) {
         userDao.saveUser(user);
-        return redirectHome;
+        return REDIRECT_HOME;
     }
 
     @GetMapping("/delete")
     public String deleteUser(@RequestParam("id") Long id) {
         userDao.deleteUser(id);
-        return redirectHome;
+        return REDIRECT_HOME;
     }
 }
